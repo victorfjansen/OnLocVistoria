@@ -1,6 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { finalize, tap } from 'rxjs';
+import { finalize, take, tap } from 'rxjs';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Button } from 'primeng/button';
@@ -9,6 +9,7 @@ import { Tag } from 'primeng/tag';
 
 import { UsersService } from '../../core/api/users.service';
 import type { Role, User } from '../../core/models/domain';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-users',
@@ -26,11 +27,16 @@ export class Users {
   readonly loading = signal(true);
 
   ngOnInit(): void {
-    this.load();
+    this.load()
+      .pipe(
+        take(1)
+      )
+      .subscribe()
   }
 
   private load() {
     this.loading.set(true);
+
     return this.service.list().pipe(
       tap((users) => this.users.set(users)),
       finalize(() => this.loading.set(false))

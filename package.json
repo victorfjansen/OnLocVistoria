@@ -3,12 +3,19 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "prestart": "node scripts/generate-env.mjs",
     "start": "ng serve",
+    "prebuild": "node scripts/generate-env.mjs",
     "build": "ng build",
+    "prewatch": "node scripts/generate-env.mjs",
     "watch": "ng build --watch --configuration development",
+    "pretest": "node scripts/generate-env.mjs",
     "test": "jest",
+    "pretest:watch": "node scripts/generate-env.mjs",
     "test:watch": "jest --watch",
+    "pretest:coverage": "node scripts/generate-env.mjs",
     "test:coverage": "jest --coverage",
+    "pree2e": "node scripts/generate-env.mjs",
     "e2e": "playwright test"
   },
   "prettier": {
