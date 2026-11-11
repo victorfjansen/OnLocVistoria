@@ -36,7 +36,7 @@ jobs:
     env:
       # Endereço da API usada pela aplicação durante os testes E2E.
       API_BASE: https://on-loc-backend.victorfjansen.com/api
-      API_MOCKS: true
+      ENABLE_API_MOCKS: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
