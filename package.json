@@ -16,7 +16,7 @@
     "pretest:coverage": "node scripts/generate-env.mjs",
     "test:coverage": "jest --coverage",
     "pree2e": "node scripts/generate-env.mjs",
-    "e2e": "ENABLE_API_MOCKS=true playwright test"
+    "e2e": "playwright test"
   },
   "prettier": {
     "printWidth": 100,

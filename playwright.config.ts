@@ -7,25 +7,33 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './e2e',
   fullyParallel: true,
-  workers: 4,
+  workers: `50%`,
   forbidOnly: !!process.env['CI'],
   retries: process.env['CI'] ? 2 : 0,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL: 'http://localhost:4200',
     trace: 'on-first-retry',
-    locale: 'pt-BR'
+    locale: 'pt-BR',
+    video: 'retain-on-failure'
   },
+  
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] }
+      use: { ...devices['Desktop Chrome'] },
+
     }
   ],
   webServer: {
     command: 'npm run start -- --port 4200',
     url: 'http://localhost:4200',
     reuseExistingServer: !process.env['CI'],
-    timeout: 120_000
+    timeout: 120_000,
+    env: {
+      // Os testes E2E usam a API mockada (MSW), na mesma origem, com credenciais de exemplo.
+      ENABLE_API_MOCKS: 'true',
+      API_BASE: '/api'
+    }
   }
 });
