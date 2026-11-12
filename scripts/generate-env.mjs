@@ -13,20 +13,21 @@ const outDir = resolve(rootDir, 'src', 'environments');
 const outFile = resolve(outDir, 'environment.ts');
 
 const DEFAULT_API_BASE = '/api';
-const ENABLE_API_MOCKS = process.env['ENABLE_API_MOCKS'] || false;
 
 if (existsSync(envFile)) {
   process.loadEnvFile(envFile);
 }
 
 const apiBase = (process.env.API_BASE ?? '').trim() || DEFAULT_API_BASE;
+const enableApiMocks =
+  String(process.env.ENABLE_API_MOCKS ?? '').trim().toLowerCase() === 'true';
 
 const content = [
   '// Arquivo gerado automaticamente por scripts/generate-env.mjs.',
   '// Não edite manualmente; altere a variável no arquivo .env da raiz do projeto.',
   'export const environment = {',
-  `  apiBase: ${JSON.stringify(apiBase)}`,
-    ENABLE_API_MOCKS,
+  `  apiBase: ${JSON.stringify(apiBase)},`,
+  `  enableApiMocks: ${enableApiMocks},`,
   '};',
   ''
 ].join('\n');
@@ -34,5 +35,6 @@ const content = [
 mkdirSync(outDir, { recursive: true });
 writeFileSync(outFile, content, 'utf8');
 
-console.log(`[generate-env] API_BASE=${apiBase} -> ${outFile}`);
-console.log(`[generate-env] ENABLE_API_MOCKS=${ENABLE_API_MOCKS} -> ${outFile}`);
+console.log(
+  `[generate-env] API_BASE=${apiBase} ENABLE_API_MOCKS=${enableApiMocks} -> ${outFile}`
+);
