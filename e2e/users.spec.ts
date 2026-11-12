@@ -18,5 +18,6 @@ test('gestor cria novo usuário', async ({ page }) => {
   await page.getByRole('button', { name: 'Salvar' }).click();
 
   await expect(page).toHaveURL(/\/usuarios$/);
-  await expect(page.getByText('Carla Mendes')).toBeVisible();
+  
+  await expect(page.getByRole('cell', { name: 'Carla Mendes' })).toBeVisible();
 });
